@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>ConfBooker - Conference Room Booking App</title>
+    <style>
+      .image {
+        -webkit-box-shadow: 8px 8px 24px 0px rgba(66, 68, 90, 1);
+        -moz-box-shadow: 8px 8px 24px 0px rgba(66, 68, 90, 1);
+        box-shadow: 8px 8px 24px 0px rgba(66, 68, 90, 1);
+        border-radius: 20%;
+      }
+      body{
+        text-align:center;
+        font-family: 'Courier New', monospace;
+        background-color: rgba(89, 131, 252, 0.21);
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="logo">
+        {% load static %} <img class="image" src="{% static "ConfBookLogo.png" %}" alt="ConfBooker logo" width="200" height="200" />
+        <h1>ConfBooker</h1>
+      </div>
+      <nav>
+        <ul>
+          <li><a href="/home/">Home - list of all rooms</a></li>
+          <li><a href="/room/new/">Settings - Add new room</a></li>
+        </ul>
+      </nav>
+    </header>
+    <main>
+      <h2>Welcome to Settings </h2>
+      <p>Here you can add new conference room via form below.</p>
+          {% if exist_room != True and capacity_room > 0 %}
+          <p style="color:green">New room: {{new_room_name}} with capacity: {{capacity_room}} and Projector_ability: {{projector_ability}}
+          has been added to date base !</p>
+          {% endif %}
+      <form action="#" method="POST">
+        {% csrf_token %}
+        <label>
+          Name of room:
+          <input type="text" name="new_room_name">
+        </label>
+        {% if exist_room == True %}
+          <p style="color:orangered"> Room {{new_room_name}} already exists - Chose another name. </p>
+        {% endif %}
+        <br>
+        <label>
+          Capacity of room:
+          <input type="number" name="capacity_room">
+        </label>
+        {% if capacity_room <= 0 %}
+        <p style="color:orangered">Room capacity must be bigger than 0. </p>
+        {% endif %}
+        <br>
+        <label>
+          Projector ability?:
+          <input type="radio" name="projector_ability">
+        </label>
+        <br>
+        <label>
+          Send:
+          <input type="submit">
+        </label>
+      </form>
+    </main>
+    <footer>
+      <p>&copy; 2023 ConfBooker. All rights reserved. Author: Dawid Janic</p>
+    </footer>
+  </body>
+</html>

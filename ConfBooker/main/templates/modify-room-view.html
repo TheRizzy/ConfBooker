@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>ConfBooker - Conference Room Booking App</title>
+    <style>
+      .image {
+        -webkit-box-shadow: 8px 8px 24px 0px rgba(66, 68, 90, 1);
+        -moz-box-shadow: 8px 8px 24px 0px rgba(66, 68, 90, 1);
+        box-shadow: 8px 8px 24px 0px rgba(66, 68, 90, 1);
+        border-radius: 20%;
+      }
+      body{
+        text-align:center;
+        font-family: 'Courier New', monospace;
+        background-color: rgba(89, 131, 252, 0.21);
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="logo">
+        {% load static %} <img class="image" src="{% static "ConfBookLogo.png" %}" alt="ConfBooker logo" width="200" height="200" />
+        <h1>ConfBooker</h1>
+      </div>
+      <nav>
+        <ul>
+          <li><a href="/home/">Home - list of all rooms</a></li>
+          <li><a href="/room/new/">Settings - Add new room</a></li>
+        </ul>
+      </nav>
+    </header>
+    <main>
+      <h2>Welcome to modify view </h2>
+      <p>Here you can modify conference room via form below.</p>
+      <p style="color: darkorange">You can now modify: <br>
+        Room: <strong>{{room.name_room}}</strong>, <br>
+        Capacity: <strong>{{room.capacity_room}}</strong>, <br>
+        Projector available: <strong>{{room.projector_available}}</strong></p>
+      <form action="#" method="POST">
+        {% csrf_token %}
+        <label>
+          New name:
+          <input type="text" name="modify_room_name">
+        </label>
+        {% if exist_modify_room_name == True %}
+          <p style="color:orangered"> Room {{modify_room_name}} already exists - Chose another name. </p>
+        {% endif %}
+        {% if modify_room_name != '' and exist_modify_room_name == True or exist_modify_room_name == False %}
+          <p style="color:orangered"> Room must have name. CAN NOT be empty. </p>
+        {% endif %}
+        <br>
+        <label>
+          New capacity:
+          <input type="number" name="modify_capacity_room">
+        </label>
+        {% if modify_capacity_room <= 0 %}
+        <p style="color:orangered">Room capacity must be bigger than 0. </p>
+        {% endif %}
+        <br>
+        <label>
+          New projector ability?:
+          <input type="radio" name="projector_ability">
+        </label>
+        <br>
+        <label>
+          Send:
+          <input type="submit">
+        </label>
+        {% if exist_modify_room_name != True and modify_capacity_room > 0 and modify_room_name != '' %}
+          <p style="color:green">Data successful saved!</p>
+            <button onclick="location.href='/home/'" type="button">
+            Return to home</button>
+          {% endif %}
+      </form>
+    </main>
+    <footer>
+      <p>&copy; 2023 ConfBooker. All rights reserved. Author: Dawid Janic</p>
+    </footer>
+  </body>
+</html>

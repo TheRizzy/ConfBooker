@@ -31,8 +31,16 @@
       </nav>
     </header>
     <main>
-      <h2>Welcome to ConfBooker</h2>
-      <p>ConfBooker is the easiest way to book conference rooms for your meetings and events.</p>
+      <h2>Welcome to room view: {{room.name_room}}</h2>
+      <p>Capacity: {{room.capacity_room}}</p>
+      <p>Available to book: [True or False]</p>
+      <p>Is projector in room? {{room.projector_available}}</p>
+      <button onclick="location.href='/room/modify/{id}/'" type="button">
+         Edit room</button>
+      <button onclick="location.href='/room/delete/<int:id>/'" type="button">
+         Delete room</button>
+      <button onclick="location.href='/room/reserve/<int:id>/'" type="button">
+         Reserve room</button>
     </main>
     <footer>
       <p>&copy; 2023 ConfBooker. All rights reserved. Author: Dawid Janic</p>

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>ConfBooker - Conference Room Booking App</title>
+    <style>
+      .image {
+        -webkit-box-shadow: 8px 8px 24px 0px rgba(66, 68, 90, 1);
+        -moz-box-shadow: 8px 8px 24px 0px rgba(66, 68, 90, 1);
+        box-shadow: 8px 8px 24px 0px rgba(66, 68, 90, 1);
+        border-radius: 20%;
+      }
+      body{
+        text-align:center;
+        font-family: 'Courier New', monospace;
+        background-color: rgba(89, 131, 252, 0.21);
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="logo">
+        {% load static %} <img class="image" src="{% static "ConfBookLogo.png" %}" alt="ConfBooker logo" width="200" height="200" />
+        <h1>ConfBooker</h1>
+      </div>
+      <nav>
+        <ul>
+          <li><a href="/home/">Home - list of all rooms</a></li>
+          <li><a href="/room/new">Settings - Add new room</a></li>
+        </ul>
+      </nav>
+    </header>
+    <main>
+      <h2>Welcome to reserve view.</h2>
+      <p>Room: {{room.name_room}}</p>
+      <p>Capacity: {{room.capacity_room}}</p>
+      <p>Available to book: [True or False]</p>
+      <p>Is projector in room? {{room.projector_available}}</p>
+
+      {% if error %}
+      <p style="color: orangered">{{error}}</p>
+      {% endif %}
+
+      <form action="#" method="POST">
+        {% csrf_token %}
+        <label style="color: darkorange">
+          Comment or meeting name to reserve room:
+          <input type="text" name="comment_reservation">
+        </label>
+        <br>
+        <label style="color: darkorange">
+          Chose date: <i>(available only booking for hole day)</i>
+          <input type="date" name="date_reservation">
+        </label>
+        <input type="submit">
+      </form>
+      {% if massage %}
+      <p style="color: green">{{massage}}</p>
+      <button onclick="location.href='/home/'" type="button">
+            Return to home</button>
+      {% endif %}
+    </main>
+    <footer>
+      <p>&copy; 2023 ConfBooker. All rights reserved. Author: Dawid Janic</p>
+    </footer>
+  </body>
+</html>

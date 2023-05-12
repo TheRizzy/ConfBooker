@@ -1,8 +1,9 @@
 from django.shortcuts import render, get_object_or_404
 from django.views import View
 from django.http import HttpResponse
-from main.models import ConferenceRoom
+from main.models import ConferenceRoom, ReserveRoom
 from django.db import IntegrityError
+import datetime
 
 
 # Create your views here.
@@ -82,5 +83,32 @@ class ModifyRoomView(View):
         return render(request, 'modify-room-view.html', context={'modify_room_name': modify_room_name,
                                                                  'modify_capacity_room': modify_capacity_room,
                                                                  'projector_ability': projector_ability,
-                                                                 'exist_modify_room_name': exist_modify_room_name},
+                                                                 'exist_modify_room_name': exist_modify_room_name,
+                                                                 'room': room},
                       )
+
+
+class ReserveView(View):
+
+    @staticmethod
+    def get(request, id):
+        room = get_object_or_404(ConferenceRoom, id=id)
+        return render(request, 'reserve-view.html', context={'room': room})
+
+    @staticmethod
+    def post(request, id):
+        room = get_object_or_404(ConferenceRoom, id=id)
+        comment = request.POST.get('comment_reservation')
+        date = request.POST.get('date_reservation')
+
+        # jeżeli istnieje rekord z rezerwacja to znaczy że sala jest zarezerwowana
+        if ReserveRoom.objects.filter(date_reservation=date, id_room_id=room.id):
+            return render(request, 'reserve-view.html', context={'room': room, 'error': "Room is booked on this day -"
+                                                                                        " Chose another!"})
+
+        if date < str(datetime.date.today()):
+            return render(request, 'reserve-view.html', context={'room': room, 'error': "Date is from future!"})
+
+        ReserveRoom.objects.create(date_reservation=date, comment_reservation=comment, id_room_id=room.id)
+
+        return render(request, 'reserve-view.html', context={'room': room, 'massage': "Reservation crate successful!"})

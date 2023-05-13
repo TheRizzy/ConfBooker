@@ -8,14 +8,14 @@ import datetime
 
 # Create your views here.
 
-def main_page(request):
-    return render(request, 'main-page.html')
-
 
 class MainPage(View):
     @staticmethod
     def get(request):
-        return render(request, 'main-page.html')
+        rooms = ConferenceRoom.objects.all()
+        reserves = ReserveRoom.objects.all()
+        today = datetime.date.today()
+        return render(request, 'main-page.html', context={"rooms": rooms, "reserves": reserves, "today": today})
 
 
 class NewRoomView(View):
@@ -47,7 +47,8 @@ class RoomView(View):
     @staticmethod
     def get(request, id):
         room = get_object_or_404(ConferenceRoom, id=id)
-        return render(request, 'room-view.html', context={'room': room})
+        reservation = ReserveRoom.objects.filter(id_room_id=id).order_by('date_reservation')
+        return render(request, 'room-view.html', context={'room': room, 'reservation': reservation})
 
 
 class DeleteRoomView(View):
@@ -107,7 +108,7 @@ class ReserveView(View):
                                                                                         " Chose another!"})
 
         if date < str(datetime.date.today()):
-            return render(request, 'reserve-view.html', context={'room': room, 'error': "Date is from future!"})
+            return render(request, 'reserve-view.html', context={'room': room, 'error': "Date CAN NOT be from the past!"})
 
         ReserveRoom.objects.create(date_reservation=date, comment_reservation=comment, id_room_id=room.id)
 

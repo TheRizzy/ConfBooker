@@ -15,6 +15,15 @@
         font-family: 'Courier New', monospace;
         background-color: rgba(89, 131, 252, 0.21);
       }
+      table, th, td{
+        text-align:center;
+        border: 1px solid rgb(19, 50, 106);
+        margin-left: auto;
+        margin-right: auto;
+      }
+      button{
+        color: rgb(19, 50, 106);
+      }
     </style>
   </head>
   <body>
@@ -35,12 +44,32 @@
       <p>Capacity: {{room.capacity_room}}</p>
       <p>Available to book: [True or False]</p>
       <p>Is projector in room? {{room.projector_available}}</p>
-      <button onclick="location.href='/room/modify/{id}/'" type="button">
-         Edit room</button>
-      <button onclick="location.href='/room/delete/<int:id>/'" type="button">
-         Delete room</button>
-      <button onclick="location.href='/room/reserve/<int:id>/'" type="button">
-         Reserve room</button>
+        <table>
+          <tr>
+            <td>
+              <strong>Reservation date:</strong>
+            </td>
+            <td>
+              <strong>Comment:</strong>
+            </td>
+          </tr>
+          {% for key in reservation %}
+          <tr>
+            <td>{{key.date_reservation}}</td>
+            <td>{{key.comment_reservation}}</td>
+          </tr>
+          {% endfor %}
+        </table>
+      </br>
+      <button type="button">
+        <a href="/room/reserve/{{ room.id }}"> Reserve room</a>
+      </button>
+      <button type="button">
+      <a href="/room/modify/{{ room.id }}"> Modify room</a>
+      </button>
+      <button>
+      <a href="/room/delete/{{ room.id }}" > Delete room</a>
+      </button>
     </main>
     <footer>
       <p>&copy; 2023 ConfBooker. All rights reserved. Author: Dawid Janic</p>

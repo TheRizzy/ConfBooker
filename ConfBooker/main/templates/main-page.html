@@ -15,6 +15,12 @@
         font-family: 'Courier New', monospace;
         background-color: rgba(89, 131, 252, 0.21);
       }
+      table, th, td{
+        text-align:center;
+        border: 1px solid rgb(19, 50, 106);
+        margin-left: auto;
+        margin-right: auto;
+      }
     </style>
   </head>
   <body>
@@ -33,7 +39,52 @@
     <main>
       <h2>Welcome to ConfBooker</h2>
       <p>ConfBooker is the easiest way to book conference rooms for your meetings and events.</p>
+      <h3>List of all conference rooms</h3>
+      <table>
+        <tr>
+          <td>
+            <strong>Name of room:</strong>
+          </td>
+          <td>
+            <strong>Capacity:</strong>
+          </td>
+          <td>
+            <strong>Projector?:</strong>
+          </td>
+          <td>
+            <strong>Available for book today?:</strong>
+          </td>
+          <td>
+            <strong>Action:</strong>
+          </td>
+        </tr>
+        {% for room in rooms %}
+        <tr>
+          <td>{{room.name_room}}</td>
+          <td>{{room.capacity_room}}</td>
+          <td>{{room.projector_available}}</td>
+          <td>
+            Occupied / Free
+          </td>
+          <td>
+            <button>
+              <a href="/room/{{ room.id }}" > Details</a>
+            </button>
+            <button type="button">
+            <a href="/room/reserve/{{ room.id }}"> Reserve</a>
+            </button>
+            <button type="button">
+            <a href="/room/modify/{{ room.id }}"> Modify</a>
+            </button>
+            <button>
+            <a href="/room/delete/{{ room.id }}" > Delete</a>
+            </button>
+          </td>
+        </tr>
+        {% endfor %}
+      </table>
     </main>
+
     <footer>
       <p>&copy; 2023 ConfBooker. All rights reserved. Author: Dawid Janic</p>
     </footer>

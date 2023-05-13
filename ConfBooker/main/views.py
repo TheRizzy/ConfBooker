@@ -13,9 +13,13 @@ class MainPage(View):
     @staticmethod
     def get(request):
         rooms = ConferenceRoom.objects.all()
-        reserves = ReserveRoom.objects.all()
+        reservations = ReserveRoom.objects.all()
         today = datetime.date.today()
-        return render(request, 'main-page.html', context={"rooms": rooms, "reserves": reserves, "today": today})
+        #do wyjaśnienia jak pokazać czy sala jest dostępna 'dzisiaj'
+        # for room in rooms:
+        #     reservation_dates = [reservations.date_reservation for reservations in room.roomreservation_set.all()]
+        #     room.reserved = today in reservation_dates
+        return render(request, 'main-page.html', context={"rooms": rooms, "reserves": reservations, "today": today})
 
 
 class NewRoomView(View):
@@ -94,7 +98,8 @@ class ReserveView(View):
     @staticmethod
     def get(request, id):
         room = get_object_or_404(ConferenceRoom, id=id)
-        return render(request, 'reserve-view.html', context={'room': room})
+        reservation = ReserveRoom.objects.filter(id_room_id=id).order_by('date_reservation')
+        return render(request, 'reserve-view.html', context={'room': room, 'reservation': reservation})
 
     @staticmethod
     def post(request, id):

@@ -15,6 +15,12 @@
         font-family: 'Courier New', monospace;
         background-color: rgba(89, 131, 252, 0.21);
       }
+      table, th, td{
+        text-align:center;
+        border: 1px solid rgb(19, 50, 106);
+        margin-left: auto;
+        margin-right: auto;
+      }
     </style>
   </head>
   <body>
@@ -43,13 +49,13 @@
 
       <form action="#" method="POST">
         {% csrf_token %}
-        <label style="color: darkorange">
-          Comment or meeting name to reserve room:
+        <label>
+          <strong>Comment for reservation:</strong>
           <input type="text" name="comment_reservation">
         </label>
         <br>
-        <label style="color: darkorange">
-          Chose date: <i>(available only booking for hole day)</i>
+        <label>
+          <strong> Chose date:</strong> <i>(only booking for hole day)</i>
           <input type="date" name="date_reservation">
         </label>
         <input type="submit">
@@ -59,6 +65,27 @@
       <button onclick="location.href='/home/'" type="button">
             Return to home</button>
       {% endif %}
+      </br>
+        <table>
+          <tr>
+            <strong>All reservations</strong>
+          </tr>
+          <tr>
+            <td>
+              <strong>Date:</strong>
+            </td>
+            <td>
+              <strong>Comment:</strong>
+            </td>
+          </tr>
+          {% for key in reservation %}
+          <tr>
+            <td>{{key.date_reservation}}</td>
+            <td>{{key.comment_reservation}}</td>
+          </tr>
+          {% endfor %}
+        </table>
+
     </main>
     <footer>
       <p>&copy; 2023 ConfBooker. All rights reserved. Author: Dawid Janic</p>

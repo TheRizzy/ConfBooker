@@ -12,5 +12,8 @@ After run server `python manage.py runserver` you can acces to this functions in
 -  reserve conference room - [http://127.0.0.1:8000/room/reserve/<int:id>/](http://127.0.0.1:8000/room/reserve/<int:id>/)  
 
 Pleas note that `int:id` can be change to any id room in datebase - if it's not there return 404 page
+
 ***
-In file `requirements.txt` you can check all packages use in the environment to run project.
+> [!NOTE]
+> In file `requirements.txt` you can check all packages use in the environment to run project.
+
